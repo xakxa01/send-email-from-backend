@@ -22,7 +22,7 @@ router.post("/", async (req: Request, res: Response) => {
 		to: process.env.EMAIL_TO_SEND!,
 		subject,
 		html,
-		attachments: attachments.map((file: any) => ({
+		attachments: !attachments ? null : attachments.map((file: any) => ({
 			filename: file.filename,
 			content: file.content
 		})),
