@@ -1,7 +1,7 @@
-import { Request, Response, Router } from 'express'
+import { Router } from 'express'
 import { Resend } from 'resend';
 import { config } from 'dotenv'
-import htmlTemplate from '../components/htmlTemplate';
+import htmlTemplate from '../components/htmlTemplate.js';
 
 config()
 
@@ -11,7 +11,7 @@ const router = Router()
 
 router
 	.get('/', (req, res) => res.send('hello world'))
-	.post("/", async (req: Request, res: Response) => {
+	.post("/", async (req, res) => {
 		const body = req.body
 
 		const { attachments } = body;
@@ -21,10 +21,10 @@ router
 
 		const { data, error } = await resend.emails.send({
 			from: `${title} <${process.env.EMAIL_SENDER}>`,
-			to: process.env.EMAIL_TO_SEND!,
+			to: process.env.EMAIL_TO_SEND,
 			subject,
 			html,
-			attachments: !attachments ? null : attachments.map((file: any) => ({
+			attachments: !attachments ? null : attachments.map((file) => ({
 				filename: file.filename,
 				content: file.content
 			})),

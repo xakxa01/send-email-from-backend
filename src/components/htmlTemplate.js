@@ -1,4 +1,4 @@
-const htmlTemplate = (body: any) => {
+const htmlTemplate = (body) => {
 	const { errorType, message, selectRoute } = body;
 
 	return `
