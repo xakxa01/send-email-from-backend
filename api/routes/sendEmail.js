@@ -10,7 +10,6 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const router = Router()
 
 router
-	.get('/', (req, res) => res.send('hello world'))
 	.post("/", async (req, res) => {
 		const body = req.body
 
