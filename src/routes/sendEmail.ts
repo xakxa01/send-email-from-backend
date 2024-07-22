@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express'
 import { Resend } from 'resend';
 import { config } from 'dotenv'
+import htmlTemplate from '../components/htmlTemplate';
 
 config()
 
@@ -9,42 +10,18 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const router = Router()
 
 router.post("/", async (req: Request, res: Response) => {
-	const { errorType, message, selectRoute, attachments } = req.body;
+	const body = req.body
 
-	const htmlTemplate = `
-			<ul> 
-				<li>
-					<h3> 
-						<strong>Error Type:</strong> 
-					</h3>
-
-					${errorType}
-				</li>
-				<li>
-					<h3> 
-						<strong>Message:</strong>
-					</h3>
-
-					${message}
-				 </li>
-
-				${!selectRoute ? `` : `
-					<li>
-						<h3>
-							<strong>Route Selected:</strong>
-						</h3>
-
-						${selectRoute}
-					</li>
-				`}
-			</ul>
-		`;
+	const { attachments } = body;
+	const title = 'Ayuda Concho'
+	const subject = 'Report'
+	const html = htmlTemplate(body)
 
 	const { data, error } = await resend.emails.send({
-		from: "Ayuda Concho <onboarding@resend.dev>",
-		to: "carlosxaviergomezbarriento@gmail.com",
-		subject: 'Report',
-		html: htmlTemplate,
+		from: `${title} <${process.env.EMAIL_SENDER}>`,
+		to: process.env.EMAIL_TO_SEND!,
+		subject,
+		html,
 		attachments: attachments.map((file: any) => ({
 			filename: file.filename,
 			content: file.content
