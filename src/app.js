@@ -14,6 +14,11 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/sendEmail', router)
+app.use('/', (req, res) => {
+	res
+		.status(200)
+		.json({ message: "Email sent" })
+})
 
 // Start the server
 const port = process.env.PORT || 3000
